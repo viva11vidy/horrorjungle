@@ -42,7 +42,8 @@ export default async function ReviewPage({ params }: Props) {
             "@type": "Review",
             "itemReviewed": {
               "@type": "Movie",
-              "name": "Movie Name"
+              "name": "Movie Name",
+              "image": "https://www.horrorjungle.com/placeholder-movie.jpg"
             },
             "reviewRating": {
               "@type": "Rating",
