@@ -1,16 +1,36 @@
 import { Metadata } from "next";
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export const metadata: Metadata = {
-  title: "Movie Review | Horrorjungle",
-  description:
-    "An honest horror movie review to help you decide if it’s worth watching and where to stream it.",
-};
 
-export default function ReviewPage({ params }: Props) {
+function slugToTitle(slug: string) {
+  return slug
+    .replace(/-review$/, "") // remove trailing "-review"
+    .split("-")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  const { slug } = await params;
+
+  const movieTitle = slugToTitle(slug);
+
+  const title = `${movieTitle} Review – Is It Worth Watching?`;
+  const description = `Read our honest review of ${movieTitle}. Find out if it’s worth watching and where you can stream it.`;
+
+  return {
+    title,
+    description,
+  };
+}
+
+export default async function ReviewPage({ params }: Props) {
+  const { slug } = await params;
   return (
     <main style={{ maxWidth: "800px", margin: "40px auto", padding: "0 20px" }}>
       {/* Movie Title */}
