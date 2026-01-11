@@ -33,6 +33,32 @@ export default async function ReviewPage({ params }: Props) {
   const { slug } = await params;
   return (
     <main style={{ maxWidth: "800px", margin: "40px auto", padding: "0 20px" }}>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Review",
+            "itemReviewed": {
+              "@type": "Movie",
+              "name": "Movie Name"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "4",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Organization",
+              "name": "Horrorjungle"
+            },
+            "reviewBody":
+              "An honest horror movie review discussing atmosphere, story, and overall impact."
+          }),
+        }}
+      />
+
       {/* Movie Title */}
       <h1>Movie Name Review</h1>
 
