@@ -1,122 +1,123 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getReviewBySlug } from "@/lib/api";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-
-function slugToTitle(slug: string) {
-  return slug
-    .replace(/-review$/, "") // remove trailing "-review"
-    .split("-")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
+/* =========================
+   SEO METADATA (CMS DRIVEN)
+========================= */
 export async function generateMetadata(
   { params }: Props
 ): Promise<Metadata> {
   const { slug } = await params;
 
-  const movieTitle = slugToTitle(slug);
+  const review = await getReviewBySlug(slug);
+  if (!review) return {};
 
-  const title = `${movieTitle} Review – Is It Worth Watching?`;
-  const description = `Read our honest review of ${movieTitle}. Find out if it’s worth watching and where you can stream it.`;
+  const { acf } = review;
+
+  const title = `${review.title.rendered} Review – Is It Worth Watching?`;
+  const description = review.acf.review_summary;
 
   return {
     title,
     description,
+    openGraph: {
+      title,
+      description,
+      images: acf.poster ? [acf.poster] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: acf.poster ? [acf.poster] : [],
+    },
+    alternates: {
+      canonical: `https://horrorjungle.com/reviews/${slug}`,
+    },
   };
 }
 
+/* =========================
+   PAGE RENDER
+========================= */
 export default async function ReviewPage({ params }: Props) {
   const { slug } = await params;
-  return (
-    <main style={{ maxWidth: "800px", margin: "40px auto", padding: "0 20px" }}>
 
+  const review = await getReviewBySlug(slug);
+  if (!review) notFound();
+
+  const { title, acf } = review;
+
+  return (
+    <main className="max-w-3xl mx-auto p-6">
+
+      {/* ✅ REVIEW SCHEMA (CMS DRIVEN) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Review",
-            "itemReviewed": {
-              "@type": "Movie",
-              "name": "Movie Name",
-              "image": "https://www.horrorjungle.com/placeholder-movie.jpg"
-            },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": "4",
-              "bestRating": "5"
-            },
-            "author": {
-              "@type": "Organization",
-              "name": "Horrorjungle"
-            },
-            "reviewBody":
-              "An honest horror movie review discussing atmosphere, story, and overall impact."
+            "@graph": [
+              {
+                "@type": "Movie",
+                "@id": `https://horrorjungle.com/reviews/${slug}#movie`,
+                "name": title.rendered,
+                "image": acf.poster,
+              },
+              {
+                "@type": "Review",
+                "itemReviewed": {
+                  "@id": `https://horrorjungle.com/reviews/${slug}#movie`
+                },
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": acf.rating,
+                  "bestRating": "10"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "Horrorjungle"
+                },
+                "reviewBody": acf.review_summary
+              }
+            ]
           }),
         }}
       />
 
-      {/* Movie Title */}
-      <h1>Movie Name Review</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        {title.rendered}
+      </h1>
 
-      {/* Quick Verdict */}
-      <p>
-        <strong>Quick Verdict:</strong> A short, honest summary of whether this
-        horror movie is worth watching.
+      {acf.poster && (
+        <img
+          src={acf.poster}
+          alt={title.rendered}
+          className="rounded mb-4"
+        />
+      )}
+
+      <p className="mb-2">
+        ⭐ <strong>{acf.rating}/10</strong>
       </p>
 
-      {/* Movie Meta */}
-      <ul>
-        <li><strong>Genre:</strong> Psychological Horror</li>
-        <li><strong>Year:</strong> 2024</li>
-        <li><strong>Runtime:</strong> 110 minutes</li>
-        <li><strong>Director:</strong> Director Name</li>
-      </ul>
-
-      {/* Rating */}
-      <p>
-        <strong>Rating:</strong> ⭐⭐⭐⭐☆ (4/5)
+      <p className="text-sm text-gray-400 mb-4">
+        <strong>Where to watch:</strong> {acf.where_to_watch}
       </p>
 
-      {/* Main Review */}
       <section>
-        <h2>Full Review</h2>
-        <p>
-          Write the detailed review here. Focus on atmosphere, story, pacing,
-          performances, and what kind of horror this movie delivers.
-        </p>
+        <h2 className="text-xl font-semibold mb-2">
+          Quick Verdict
+        </h2>
+        <p>{acf.review_summary}</p>
       </section>
 
-      {/* Who Should Watch */}
-      <section>
-        <h2>Who Should Watch This Movie?</h2>
-        <ul>
-          <li>Fans of slow-burn horror</li>
-          <li>Viewers who enjoy psychological tension</li>
-        </ul>
-      </section>
-
-      {/* Who Should Skip */}
-      <section>
-        <h2>Who Should Skip This Movie?</h2>
-        <ul>
-          <li>People expecting heavy jump scares</li>
-          <li>Viewers who dislike ambiguous endings</li>
-        </ul>
-      </section>
-
-      {/* Where to Watch */}
-      <section>
-        <h2>Where to Watch</h2>
-        <p>
-          Available on <strong>Amazon Prime Video</strong> and{" "}
-          <strong>Apple TV</strong>.
-        </p>
-      </section>
     </main>
   );
 }
