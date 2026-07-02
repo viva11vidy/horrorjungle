@@ -36,3 +36,39 @@ export async function getReviewBySlug(slug: string) {
   const data = await res.json();
   return data[0] || null;
 }
+
+
+/**
+ * Title by slug
+ */
+export async function getTitleBySlug(slug: string) {
+  const res = await fetch(
+    `https://cms.horrorjungle.com/wp-json/wp/v2/titles?slug=${slug}&acf_format=standard`,
+    { next: { revalidate: 300 } }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch title");
+  }
+
+  const data = await res.json();
+  return data[0] || null;
+}
+
+
+
+export async function getTitlesByTaxonomy(
+  taxonomy: string,
+  slug: string
+) {
+  const res = await fetch(
+    `https://cms.horrorjungle.com/wp-json/wp/v2/titles?${taxonomy}=${slug}&acf_format=standard`,
+    { next: { revalidate: 300 } }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch titles");
+  }
+
+  return res.json();
+}
