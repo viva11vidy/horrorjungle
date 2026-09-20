@@ -5,6 +5,8 @@ import localFont from "next/font/local";
 import Sidebar from "../components/Sidebar";
 import ScrollManager from "../components/ScrollManager";
 import "@flaticon/flaticon-uicons/css/all/all.css";
+import "swiper/css";
+import "swiper/css/navigation";
 
 import "./globals.css";
 
@@ -80,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
 		<head>
 			<link
 			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -89,7 +91,7 @@ export default function RootLayout({
 			/>
 			<link
 			rel="stylesheet"
-			href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 			/>
 		</head>
 		<body className={`${poppins.variable} ${quicksand.variable} ${stormGust.variable} ${bebasNeue.variable} hj-app`} >

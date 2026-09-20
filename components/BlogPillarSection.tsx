@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Mousewheel } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 
 const horrorGuides = [
   {

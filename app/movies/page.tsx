@@ -1,105 +1,15 @@
-"use client";
-import Image from "next/image";
-import { useState } from "react";
-import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 import BlogPillarSection from "@/components/BlogPillarSection";
 import BlogTrendingSection from "@/components/BlogTrendingSection";
 import BlogEditorPickSection from "@/components/BlogEditorPickSection";
+import TopHorrorMoviesSection from "@/components/TopHorrorMoviesSection";
+import MovieFaqSection from "@/components/MovieFaqSection";
+import Link from "next/link";
+
+const array = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function Movies() {
-    const array = [1,2,3,4,5,6,7,8];
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const toggleAccordion = (index: number) => {
-      setActiveIndex(activeIndex === index ? -1 : index);
-    };
-    const faqs = [
-      {
-        question: "Is Hereditary scary?",
-
-        answer:
-          "Yes. Hereditary is considered one of the scariest psychological horror films due to its unsettling atmosphere, disturbing imagery, and emotional intensity.",
-      },
-
-      {
-        question: "Is Hereditary worth watching?",
-
-        answer:
-          "Absolutely. If you enjoy slow-burn psychological horror with exceptional performances and storytelling, it's highly recommended.",
-      },
-
-      {
-        question: "Is Hereditary based on a true story?",
-
-        answer:
-          "No. The film is entirely fictional, although it explores realistic themes of grief, trauma, and family relationships.",
-      },
-
-      {
-        question: "Does Hereditary have jump scares?",
-
-        answer:
-          "Yes, but very few. It relies more on tension, atmosphere, and psychological horror than frequent jump scares.",
-      },
-
-      {
-        question: "Is Hereditary disturbing?",
-
-        answer:
-          "Yes. It contains disturbing imagery, emotional trauma, violence, and unsettling supernatural elements.",
-      },
-
-      {
-        question: "Where can I watch Hereditary?",
-
-        answer:
-          "Availability depends on your country. Check streaming services like Netflix, Prime Video, Max, or Apple TV.",
-      },
-
-      {
-        question: "Is there a post-credit scene?",
-
-        answer: "No. There is no post-credit scene in Hereditary.",
-      },
-    ];
-		const topHorrorMovies = [
-			{
-				title: "Midsommar",
-				poster: "https://placehold.co/1000x1500.jpg",
-				rating: "7.1/10",
-				year: "2019",
-			},
-			{
-				title: "Hereditary",
-				poster: "https://placehold.co/1000x1500.jpg",
-				rating: "7.3/10",
-				year: "2018",
-			},
-			{
-				title: "The Witch",
-				poster: "https://placehold.co/1000x1500.jpg",
-				rating: "7.0/10",
-				year: "2015",
-			},
-			{
-				title: "Talk To Me",
-				poster: "https://placehold.co/1000x1500.jpg",
-				rating: "7.2/10",
-				year: "2023",
-			},
-			{
-				title: "Smile",
-				poster: "https://placehold.co/1000x1500.jpg",
-				rating: "6.8/10",
-				year: "2022",
-			},
-		];
   return (
-    <div className="row">
+<div className="row">
       <div className="col-md-12">
         <div className="breadcrumb-area">
           <ul className="breadcrumb">
@@ -126,7 +36,7 @@ export default function Movies() {
         <div className="row">
           <div className="col-md-3">
             <div className="movie-poster-wrapper">
-              <Image
+              <img
                 src="https://placehold.co/1000x1500.jpg"
                 alt="Movie Title"
                 className="movie-poster"
@@ -311,6 +221,9 @@ export default function Movies() {
               </div>
             </div>
 
+            <div className="col-md-12 margin-t">
+              <MovieFaqSection />
+            </div>
           </div>
         </div>
       </div>
@@ -525,7 +438,7 @@ export default function Movies() {
                   </div>
 
                   <div className="single-work negative">
-                    <h3 className="works-negative">What Doesn't Work</h3>
+                    <h3 className="works-negative">What Doesn&apos;t Work</h3>
                     <div className="work-text-wrapper">
                       <div className="work-single">
                         <span>
@@ -751,28 +664,10 @@ export default function Movies() {
               </div>
             </div>
 
-            <div className="col-md-12 margin-t">
-              <div className="single-box-section">
-                <h2 className="section-heading">
-                  FAQS (Frequently Asked Questions)
-                </h2>
-                {faqs.map((faq, index) => (
-                  <div className="faq-item" key={index}>
-                    <button className="faq-question" onClick={() => toggleAccordion(index)}>
-                      <span>{faq.question}</span>
-                      <i className={`fi fi-br-angle-small-down ${activeIndex === index ? "rotate" : ""}`}/>
-                    </button>
-                    <div className={`faq-answer ${activeIndex === index ? "active" : ""}`}>
-                      <p>{faq.answer}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            
           </div>
         </div>
-
-        <div className="col-md-4">
+<div className="col-md-4">
             <div className="single-box-section margin-t">
                 <h2 className="section-heading">Movie Information</h2>
                 <div className="sm-info-wrapper">
@@ -856,7 +751,7 @@ export default function Movies() {
                 </div>
                 <div className="similar-movie-main-wrapper">
                   <div className="similar-movie-wrapper">
-                      <Image
+                      <img
                         src="https://placehold.co/1000x1000.jpg"
                         alt="Movie Title"
                         className="similar-movie-img"
@@ -873,7 +768,7 @@ export default function Movies() {
                       </div>
                   </div>
                   <div className="similar-movie-wrapper">
-                      <Image
+                      <img
                         src="https://placehold.co/1000x1000.jpg"
                         alt="Movie Title"
                         className="similar-movie-img"
@@ -899,7 +794,7 @@ export default function Movies() {
                 </div>
                 <div className="similar-movie-main-wrapper">
                   <div className="similar-movie-wrapper">
-                      <Image
+                      <img
                         src="https://placehold.co/1000x1000.jpg"
                         alt="Movie Title"
                         className="similar-movie-img"
@@ -912,7 +807,7 @@ export default function Movies() {
                       </div>
                   </div>
                   <div className="similar-movie-wrapper">
-                      <Image
+                      <img
                         src="https://placehold.co/1000x1000.jpg"
                         alt="Movie Title"
                         className="similar-movie-img"
@@ -929,77 +824,13 @@ export default function Movies() {
 
         </div>
 
-        <div className="col-md-12 margin-t">
-          <div className="single-box-section margin-t">
-            <div className="section-heading-wrapper">
-                <h2 className="section-heading">Top Horror Movies</h2>
-                <a className="section-heading-link">View All</a>
-            </div>
-						
-						<div className="section-heading-wrapper">
-							<div className="nav-buttons">
-								<button className="top-prev">
-									<i className="fa-light fa-circle-arrow-left"></i>
-								</button>
-
-								<button className="top-next">
-									<i className="fa-light fa-circle-arrow-right"></i>
-								</button>
-							</div>
-						</div>
-
-            <div className="top-horror-main-wrapper">
-							<Swiper
-								modules={[Navigation]}
-								spaceBetween={16}
-								slidesPerView="auto"
-								navigation={{
-									prevEl: ".top-prev",
-									nextEl: ".top-next",
-								}}
-							>
-								{topHorrorMovies.map((movie, index) => (
-									<SwiperSlide
-										key={index}
-										style={{ width: "160px" }}
-									>
-										<div className="top-horror-movie-wrapper">
-											<Image
-												src={movie.poster}
-												alt={movie.title}
-												className="top-horror-movie-img"
-												width={150}
-												height={225}
-											/>
-
-											<div className="top-horror-movie-info">
-												<p>{movie.title}</p>
-
-												<div>
-													<span>⭐</span>
-													<span>{movie.rating}</span>
-													<span>- {movie.year}</span>
-												</div>
-											</div>
-										</div>
-									</SwiperSlide>
-								))}
-							</Swiper>
-						</div>
-          </div>
-        </div>
         
+        <div className="col-md-12 margin-t">
+          <TopHorrorMoviesSection />
+        </div>
       </div>
 
-
-
-
-
-
-
-
-
-      <div className="col-md-12">
+<div className="col-md-12">
         <div className="section-header pt-2">
           <h1 className="title-1">
             Horror Movie Database, Ratings & Endings Explained
